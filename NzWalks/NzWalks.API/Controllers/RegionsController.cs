@@ -29,10 +29,41 @@ namespace NzWalks.API.Controllers
 
 
         [HttpGet]
-        [Route("{id:Guid}")]
+        [Route("{id:guid}")]
+        [ActionName("GetRegionById")]
         public async Task<IActionResult> GetRegionById([FromRoute] Guid id)
         {
             var regionDto = await regionRepository.GetRegionById(id);
+
+            return Ok(regionDto);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddRegion( RegionDto region)
+        {
+            var regionDomain = await regionRepository.AddRegion(region);
+
+
+            return CreatedAtAction("GetRegionById", new { id = regionDomain.Id }, regionDomain);
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")] 
+
+        public async Task<IActionResult> DeleteRegion(Guid id)
+        {
+            var regionDto = await regionRepository.DeleteRegion(id);
+
+            return Ok(regionDto);
+        }
+
+
+        [HttpPut]
+
+        public async Task<IActionResult> UpdateRegion(Guid id, RegionDto region)
+        {
+            var regionDto = await regionRepository.UpadteRegion(id, region);
 
             return Ok(regionDto);
         }

@@ -9,5 +9,11 @@ namespace NzWalks.API.Repository
        Task<List<RegionDto>> GetAllRegions();
 
         Task<RegionDto> GetRegionById(Guid id);
+
+        Task<Region> AddRegion(RegionDto regionDto);
+
+        Task<RegionDto> DeleteRegion(Guid regionId);
+
+        Task<RegionDto> UpadteRegion(Guid id, RegionDto regionDto);
     }
 }

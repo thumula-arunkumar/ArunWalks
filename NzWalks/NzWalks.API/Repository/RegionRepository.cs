@@ -16,6 +16,33 @@ namespace NzWalks.API.Repository
             this.nzWalksDbContext = nzWalksDbContext;
             this.mapper = mapper;
         }
+
+        public async Task<Region> AddRegion(RegionDto regionDto)
+        {
+            var regionDomain = mapper.Map<Region>(regionDto);
+            regionDomain.Id = Guid.NewGuid();
+
+            await nzWalksDbContext.AddAsync(regionDomain);
+            await nzWalksDbContext.SaveChangesAsync();
+
+            return regionDomain;
+
+        }
+
+        public async Task<RegionDto> DeleteRegion(Guid regionId)
+        {
+            var getregion = await nzWalksDbContext.Regions.FirstOrDefaultAsync(x => x.Id == regionId);
+
+           nzWalksDbContext.Regions.Remove(getregion);
+
+            await nzWalksDbContext.SaveChangesAsync();
+
+            //Map domain to dto 
+           var regionDto = mapper.Map<RegionDto>(getregion);
+
+            return regionDto;
+        }
+
         public async Task<List<RegionDto>> GetAllRegions()
         {
             //List<RegionDto> regionsDto = new List<RegionDto>();
@@ -55,6 +82,23 @@ namespace NzWalks.API.Repository
             //    Population = region.Population
             //};
             return regionDto;
-        } 
+        }
+
+        public async Task<RegionDto> UpadteRegion(Guid id, RegionDto regionDto)
+        {
+            var regionDomain = await nzWalksDbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            regionDomain.Name = regionDto.Name;
+            regionDomain.Code = regionDto.Code;
+            regionDomain.Area = regionDto.Area;
+            regionDomain.Long = regionDto.Long;
+            regionDomain.Lat = regionDto.Lat;
+            regionDomain.Population = regionDto.Population;
+
+            await nzWalksDbContext.SaveChangesAsync();
+
+            var regionDtoResp = mapper.Map<RegionDto>(regionDomain);
+
+            return regionDtoResp;
+        }
     }
 }
