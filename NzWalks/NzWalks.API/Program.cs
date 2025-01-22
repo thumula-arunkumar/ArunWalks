@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NzWalks.API.Data;
+using NzWalks.API.Mapper;
+using NzWalks.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,11 @@ builder.Services.AddDbContext<NzWalksDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksOldConnection"));
 });
+
+builder.Services.AddScoped<IRegionRepository, RegionRepository>();
+//here we are telling that whenever i asked for the IRegionRepository implementation give me the RegionRepository implementation
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
