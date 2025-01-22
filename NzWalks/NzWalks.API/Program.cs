@@ -20,6 +20,9 @@ builder.Services.AddDbContext<NzWalksDbContext>(options =>
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 //here we are telling that whenever i asked for the IRegionRepository implementation give me the RegionRepository implementation
 
+builder.Services.AddScoped<IWalkRepository, WalkRepository>();
+//here we are telling that whenever i asked for the IWalkRepository implementation give me the WalkRepository implementation
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
